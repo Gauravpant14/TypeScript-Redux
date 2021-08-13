@@ -9,7 +9,7 @@ export interface stateType {
 
 export interface postType {
     body: string
-    id: number
+    _id: any
     title: string
     userId: number
 }
@@ -39,7 +39,11 @@ const AllPostReducer = (state: stateType = intialState, action: Action) => {
                 loading: false,
                 posts: null,
                 error: action.payload,
-            }      
+            }
+        case ActionType.DELETE_POST_SUCCESS:
+            return{
+                posts : state.posts.filter((e) => e._id !== action.payload)
+            }          
         default:
             return state;
     }

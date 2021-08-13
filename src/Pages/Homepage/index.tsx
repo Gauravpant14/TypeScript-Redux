@@ -5,6 +5,7 @@ import { BtnContainer, Card, Container, OuterContainer, TitleCon } from './index
 import { getAllData } from '../../Redux/index'
 import { State } from '../../Redux/Reducers';
 import { Button } from '../../Auth/index.css';
+import MUIModal from '../../Comman/Modal';
 
 interface Props {
     post: any
@@ -12,6 +13,8 @@ interface Props {
 
 
 const HomePage: React.FC<Props> = () => {
+    const [open, setOpen] = React.useState(false);
+    const [uId, setId] = React.useState('');
     const dispatch = useDispatch()
     // const { } = bindActionCreators()
     const { posts }: any = useSelector((state: State) => state.posts)
@@ -19,6 +22,16 @@ const HomePage: React.FC<Props> = () => {
     useEffect(() => {
         dispatch(getAllData())
     }, [dispatch])
+
+    const handleOpen = (id:any) => {
+        console.log(id,"post id")
+        setOpen(true);
+        setId(id);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <OuterContainer>
@@ -44,11 +57,16 @@ const HomePage: React.FC<Props> = () => {
                                 </TitleCon>
                             </Container>
                             <BtnContainer>
-                                <Button>Delete</Button>
+                                <Button onClick={() => handleOpen(e._id)}>Delete</Button>
                             </BtnContainer>
                         </Card>)
                 })
 
+            }
+            {
+                open && (
+                    <MUIModal open={open} handleClose={handleClose} uId={uId}/>
+                )
             }
 
         </OuterContainer>

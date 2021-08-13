@@ -1,6 +1,6 @@
+import { ActionType } from './../Action-types/index';
 import { Action } from '../Action/index';
 import axios from 'axios'
-import { ActionType } from '../Action-types/index'
 import { Dispatch } from 'redux'
 
 export const fetchAllPostRequest = () => {
@@ -23,6 +23,13 @@ export const fetchAllPostErr = (error: string) => {
     }
 }
 
+export const deletePostSuccess = (data:any) => {
+    return {
+        type: ActionType.DELETE_POST_SUCCESS,
+        payload: data,
+    }
+}
+
 
 
 export const getAllData = () => {
@@ -41,5 +48,24 @@ export const getAllData = () => {
             console.log(error)
         }
 
+    }
+}
+
+export const deletePost = (id: any) => {
+    return async(dispatch: Dispatch<Action>) => {
+        try{
+            const res = await axios.delete(`http://localhost:5000/allpost/${id}`)
+            if(res.status === 200){
+              alert(res.data.message)
+              dispatch(deletePostSuccess(id))
+            }
+            if(res.status === 404){
+              
+            }
+            
+        }
+        catch(error){
+            alert(error);
+        }
     }
 }
